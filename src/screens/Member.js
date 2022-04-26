@@ -12,11 +12,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 import CustomButton from '../utils/CustomButton';
-// import GlobalStyle from '../utils/GlobalStyle';
+import GlobalStyles from '../utils/GlobalStyles';
 import SQLite from 'react-native-sqlite-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {setName, setPassword, setTaskID, setTasks} from '../redux/action';
+import {setTaskID, setTasks} from '../redux/action';
 
 const db = SQLite.openDatabase(
   {
@@ -69,6 +69,7 @@ export default function Member({navigation, route}) {
       })
       .catch(err => console.log(err));
   };
+
   // To delete all item when you are sign out.
   const deleteAllTask = id => {
     const filteredTasks = tasks.filter(task => task.ID === id);
@@ -145,7 +146,7 @@ export default function Member({navigation, route}) {
   };
 
   return (
-    <SafeAreaView style={styles.body}>
+    <SafeAreaView style={[GlobalStyles.androidSafeArea, styles.body]}>
       <FlatList
         data={tasks}
         renderItem={({item}) => (

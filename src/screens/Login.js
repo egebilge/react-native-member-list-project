@@ -31,7 +31,7 @@ export default function Login({navigation}) {
     // setTimeout(() => {
     //   getDataErrorMsg();
     //   navigation.replace('Login');
-    // }, 3000);
+    // }, 10000);
   }, []);
 
   const createTable = () => {
@@ -44,7 +44,7 @@ export default function Login({navigation}) {
     });
   };
 
-  //veriyi yazdığımız
+  //veriyi düzenlediğimiz
   const setData = async () => {
     if (name.length == 0 || password.length == 0) {
       Alert.alert('Warning!', 'Please write your data.');
@@ -73,7 +73,7 @@ export default function Login({navigation}) {
     }
   };
 
-  // veriyi okuduğumuz
+  // veriyi seçip okuduğumuz
   const getData = () => {
     try {
       db.transaction(tx => {

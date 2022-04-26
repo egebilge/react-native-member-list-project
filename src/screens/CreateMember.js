@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, TextInput, Alert, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomButton from '../utils/CustomButton';
 import {useSelector, useDispatch} from 'react-redux';
-import {setTasks, getMemberData, setName} from '../redux/action';
+import {setTasks, getMemberData} from '../redux/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateMember({navigation}) {
@@ -144,11 +144,11 @@ export default function CreateMember({navigation}) {
             Alert.alert('Success', 'Member data saved successfully.');
           }
         }
-        //now using AsyncStorage, we save the list of new tasks on the "Tasks" key using JSON.
+        // now using AsyncStorage, we save the list of new tasks on the "Tasks" key using JSON.
         AsyncStorage.setItem('Tasks', JSON.stringify(newTasks))
           .then(() => {
             dispatch(setTasks(newTasks)); // newTasks value, store in setTasks(state).
-            //Alert.alert('Success', 'Member data saved successfully.');
+            // Alert.alert('Success', 'Member data saved successfully.');
             navigation.goBack();
           })
           .catch(err => console.log(err));

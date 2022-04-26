@@ -32,13 +32,6 @@ export const getMemberData = () => {
   }
 };
 
-export const setTaskID = taskID => dispatch => {
-  dispatch({
-    type: SET_TASK_ID,
-    payload: taskID,
-  });
-};
-
 export const setName = name => dispatch => {
   dispatch({
     type: SET_USER_NAME,
@@ -57,5 +50,12 @@ export const setTasks = tasks => dispatch => {
   dispatch({
     type: SET_TASKS,
     payload: tasks,
+  });
+};
+
+export const setTaskID = taskID => dispatch => {
+  dispatch({
+    type: SET_TASK_ID,
+    payload: taskID,
   });
 };

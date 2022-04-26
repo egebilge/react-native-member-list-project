@@ -124,6 +124,26 @@ export default function Member({navigation, route}) {
     }
   };
 
+  const alertMsg = () => {
+    Alert.alert(
+      'Warning!',
+      'You are about to log out, all your data will be deleted!',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            deleteAllTask();
+            removeData();
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <SafeAreaView style={styles.body}>
       <FlatList
@@ -176,27 +196,7 @@ export default function Member({navigation, route}) {
           color={'#ff3636'}></FontAwesome5>
       </TouchableOpacity>
       <Text>WITHOUT DATA LOSS</Text>
-      <TouchableOpacity
-        style={styles.exit_account}
-        onPress={() => {
-          Alert.alert(
-            'Warning!',
-            'You are about to log out, all your data will be deleted!',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-              },
-              {
-                text: 'OK',
-                onPress: () => {
-                  deleteAllTask();
-                  removeData();
-                },
-              },
-            ],
-          );
-        }}>
+      <TouchableOpacity style={styles.exit_account} onPress={() => alertMsg()}>
         <FontAwesome5
           name={'sign-out-alt'}
           size={35}

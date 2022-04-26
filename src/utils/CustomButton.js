@@ -5,6 +5,7 @@ const CustomButton = props => {
   return (
     <Pressable
       onPress={props.onPressFunction}
+      disabled={false}
       hitSlop={{top: 10, bottom: 10, right: 10, left: 10}}
       android_ripple={{color: '#00000050'}}
       style={({pressed}) => [

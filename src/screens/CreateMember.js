@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, TextInput, Alert, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomButton from '../utils/CustomButton';
 import {useSelector, useDispatch} from 'react-redux';
-import {setTasks, getMemberData} from '../redux/action';
+import {setTasks, getMemberData, setName} from '../redux/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateMember({navigation}) {
@@ -15,10 +15,70 @@ export default function CreateMember({navigation}) {
   const [newBirthdate, setnewBirthdate] = useState('');
   const [newEntrancedate, setnewEntrancedate] = useState('');
 
+  const [emailValidError, setEmailValidError] = useState('');
+  const [nameValidError, setNameValidError] = useState('');
+  const [birthdateValidError, setBirthdateValidError] = useState('');
+  const [entrancedateValidError, setEntrancedateValidError] = useState('');
+
+  const [currentDate, setCurrentDate] = useState('');
+
   useEffect(() => {
+    let today = new Date();
+    let date =
+      today.getDate() +
+      '.' +
+      (today.getMonth() + 1) +
+      '.' +
+      today.getFullYear();
     getAddNewTask();
     dispatch(getMemberData());
+    setCurrentDate(date);
   }, []);
+
+  const handleValidEmail = val => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (val.length === 0) {
+      setEmailValidError('email address must be enter');
+    } else if (reg.test(val) === false) {
+      setEmailValidError('enter valid email address: [a-Z@.] ');
+    } else if (reg.test(val) === true) {
+      setEmailValidError('');
+    }
+  };
+
+  const handleValidName = val => {
+    let rjx = /^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/;
+    if (val.length === 0) {
+      setNameValidError('name must be enter');
+    } else if (rjx.test(val) === false) {
+      setNameValidError('enter valid name: [a-Z a-Z]');
+    } else if (rjx.test(val) === true) {
+      setNameValidError('');
+    }
+  };
+
+  const handleValidBirthdate = val => {
+    let reg = /^\d{2}[.]\d{2}[.]\d{4}$/;
+    if (val.length === 0) {
+      setBirthdateValidError('birthdate must be enter');
+    } else if (reg.test(val) === false) {
+      setBirthdateValidError('enter valid birthdate: [*01.01.2001]');
+    } else if (reg.test(val) === true) {
+      setBirthdateValidError('');
+    }
+  };
+
+  const handleValidEntrancedate = val => {
+    let reg = /^\d{2}[.]\d{2}[.]\d{4}$/;
+    if (val.length === 0) {
+      setEntrancedateValidError('entrancedate must be enter');
+    } else if (reg.test(val) === false) {
+      setEntrancedateValidError('enter valid entrancedate: [*01.01.2001]');
+    } else if (reg.test(val) === true) {
+      setEntrancedateValidError('');
+    }
+  };
+
   // when we click some member in a list,
   // we will find to value of desired member !!.
   const getAddNewTask = () => {
@@ -33,14 +93,25 @@ export default function CreateMember({navigation}) {
   };
 
   const setAddNewTask = () => {
-    if (
-      newName.length == 0 ||
-      newEmail.length == 0 ||
-      newAddress.length == 0 ||
-      newBirthdate.length == 0 ||
-      newEntrancedate.length == 0
-    ) {
-      Alert.alert('Warning', 'Please write your data.');
+    let regN = /^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/;
+    let isValidName = regN.test(newName);
+    let regE = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    let isValidEmail = regE.test(newEmail);
+    let regB = /^\d{2}[.]\d{2}[.]\d{4}$/;
+    let isValidBirthdate = regB.test(newBirthdate);
+    let regD = /^\d{2}[.]\d{2}[.]\d{4}$/;
+    let isValidEntrancedate = regD.test(newEntrancedate);
+
+    if (newName.length == 0 || !isValidName) {
+      Alert.alert('Warning', 'Please write your name correctly.');
+    } else if (newEmail.length == 0 || !isValidEmail) {
+      Alert.alert('Warning', 'Please write your email correctly.');
+    } else if (newAddress.length == 0) {
+      Alert.alert('Warning', 'Please write your address correctly.');
+    } else if (newBirthdate.length == 0 || !isValidBirthdate) {
+      Alert.alert('Warning', 'Please write your birthdate correctly.');
+    } else if (newEntrancedate.length == 0 || !isValidEntrancedate) {
+      Alert.alert('Warning', 'Please write your entrancedate correctly.');
     } else {
       try {
         var newValueTask = {
@@ -60,7 +131,7 @@ export default function CreateMember({navigation}) {
           newTasks[index] = newValueTask;
           Alert.alert('Success', 'Member data updated successfully.');
         }
-        //we add this object to the end of the previous tasks.
+        // we add this object to the end of the previous tasks.
         // let newTasks = [...tasks, newValueTask]; // önceki tasks(value)'dan sonra (newValueTask)'i ekle. Hep en sona eklenmiş olur.
         else {
           newTasks = [...tasks, newValueTask];
@@ -69,7 +140,7 @@ export default function CreateMember({navigation}) {
             Alert.alert('Warning!', 'You cannot add more member in a list.');
             newTasks = [...tasks];
           } else {
-            newTasks = [...tasks, newValueTask];
+            // newTasks = [...tasks, newValueTask];
             Alert.alert('Success', 'Member data saved successfully.');
           }
         }
@@ -93,13 +164,20 @@ export default function CreateMember({navigation}) {
         value={newName}
         style={styles.input}
         placeholder={'Name'}
-        onChangeText={value => setnewName(value)}></TextInput>
+        onChangeText={value => {
+          setnewName(value);
+          handleValidName(value);
+        }}></TextInput>
+      {nameValidError ? <Text>{nameValidError}</Text> : null}
       <TextInput
         value={newEmail}
         style={styles.input}
         placeholder={'Email'}
-        keyboardType={'email-address'}
-        onChangeText={value => setnewEmail(value)}></TextInput>
+        onChangeText={value => {
+          setnewEmail(value);
+          handleValidEmail(value);
+        }}></TextInput>
+      {emailValidError ? <Text>{emailValidError}</Text> : null}
       <TextInput
         value={newAddress}
         style={styles.input}
@@ -111,17 +189,27 @@ export default function CreateMember({navigation}) {
         style={styles.input}
         placeholder={'Birthdate'}
         keyboardType={'numbers-and-punctuation'}
-        onChangeText={value => setnewBirthdate(value)}></TextInput>
+        onChangeText={value => {
+          handleValidBirthdate(value);
+          setnewBirthdate(value);
+        }}></TextInput>
+      {birthdateValidError ? <Text>{birthdateValidError}</Text> : null}
       <TextInput
         value={newEntrancedate}
         style={styles.input}
         placeholder={'Entrancedate'}
         keyboardType={'numbers-and-punctuation'}
-        onChangeText={value => setnewEntrancedate(value)}></TextInput>
+        onChangeText={value => {
+          handleValidEntrancedate(value);
+          setnewEntrancedate(value);
+        }}></TextInput>
+      {entrancedateValidError ? <Text>{entrancedateValidError}</Text> : null}
+      <Text>Today: {currentDate}</Text>
       <CustomButton
         color="#1eb900"
         title="Save Member"
         onPressFunction={setAddNewTask}></CustomButton>
+
       <FlatList
         data={g_memberData}
         renderItem={({item}) => (

@@ -4,6 +4,7 @@ import CustomButton from '../utils/CustomButton';
 import SQLite from 'react-native-sqlite-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import {setName, setPassword} from '../redux/action';
+import GlobalStyles from '../utils/GlobalStyles';
 
 const db = SQLite.openDatabase(
   {
@@ -105,11 +106,11 @@ export default function Login({navigation}) {
         <Text style={styles.text}> MemberListApp </Text>
       </View>
       <TextInput
-        style={styles.input}
+        style={[GlobalStyles.androidInput]}
         placeholder="Enter your name:"
         onChangeText={value => dispatch(setName(value))}></TextInput>
       <TextInput
-        style={styles.input}
+        style={[GlobalStyles.androidInput]}
         placeholder="Enter your password:"
         onChangeText={value => dispatch(setPassword(value))}
         secureTextEntry></TextInput>

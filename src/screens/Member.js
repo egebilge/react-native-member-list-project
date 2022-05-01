@@ -1,17 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useEffect} from 'react';
+import * as React from 'react';
 import {
   StyleSheet,
   View,
   Text,
   Alert,
-  TextInput,
   FlatList,
   TouchableOpacity,
-  ScrollView,
   SafeAreaView,
 } from 'react-native';
-import CustomButton from '../utils/CustomButton';
 import GlobalStyles from '../utils/GlobalStyles';
 import SQLite from 'react-native-sqlite-storage';
 import {useSelector, useDispatch} from 'react-redux';
@@ -30,12 +27,10 @@ const db = SQLite.openDatabase(
 );
 
 export default function Member({navigation, route}) {
-  const {name, password, tasks, taskID} = useSelector(
-    state => state.userReducer,
-  );
+  const {tasks} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  React.useEffect(() => {
     createTable();
     getData();
     getTasks();
@@ -146,7 +141,7 @@ export default function Member({navigation, route}) {
   };
 
   return (
-    <SafeAreaView style={[GlobalStyles.androidSafeArea, styles.body]}>
+    <SafeAreaView style={[GlobalStyles.androidSafeArea]}>
       <FlatList
         data={tasks}
         renderItem={({item}) => (
@@ -187,7 +182,6 @@ export default function Member({navigation, route}) {
         <Text style={styles.text}>+</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.exit_account_without_lost_data}
         onPress={() => {
           removeData();
         }}>

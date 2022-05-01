@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Platform} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 
 export default StyleSheet.create({
   androidSafeArea: {

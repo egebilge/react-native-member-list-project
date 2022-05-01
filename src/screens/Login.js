@@ -1,5 +1,5 @@
 import {View, StyleSheet, Image, Text, TextInput, Alert} from 'react-native';
-import React, {useEffect} from 'react';
+import * as React from 'react';
 import CustomButton from '../utils/CustomButton';
 import SQLite from 'react-native-sqlite-storage';
 import {useSelector, useDispatch} from 'react-redux';
@@ -26,7 +26,7 @@ export default function Login({navigation}) {
     Alert.alert('Warning', 'Please write your data in 10 sec.');
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     createTable();
     getData();
     // setTimeout(() => {
@@ -90,9 +90,12 @@ export default function Login({navigation}) {
     }
   };
 
-  // const goMemberPage = () => {
-  //   navigation.navigate('Member');
-  // };
+  const valueOfName = value => {
+    dispatch(setName(value));
+  };
+  const valueOfPassword = value => {
+    dispatch(setPassword(value));
+  };
 
   return (
     <View style={styles.body}>
@@ -108,18 +111,13 @@ export default function Login({navigation}) {
       <TextInput
         style={[GlobalStyles.androidInput]}
         placeholder="Enter your name:"
-        onChangeText={value => dispatch(setName(value))}></TextInput>
+        onChangeText={valueOfName}></TextInput>
       <TextInput
         style={[GlobalStyles.androidInput]}
         placeholder="Enter your password:"
-        onChangeText={value => dispatch(setPassword(value))}
+        onChangeText={valueOfPassword}
         secureTextEntry></TextInput>
       <CustomButton title="Login" color="#1eb900" onPressFunction={setData} />
-      {/* <CustomButton
-        title="MemberList"
-        color="#1eb900"
-        onPressFunction={setData}
-      /> */}
     </View>
   );
 }

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import CustomButton from '../utils/CustomButton';
 import {useSelector, useDispatch} from 'react-redux';
 import {setTasks, getMemberData} from '../redux/action';
+// import validErrors from '../errors/validErrors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateMember({navigation}) {
@@ -15,8 +16,8 @@ export default function CreateMember({navigation}) {
   const [newBirthdate, setnewBirthdate] = useState('');
   const [newEntrancedate, setnewEntrancedate] = useState('');
 
-  const [emailValidError, setEmailValidError] = useState('');
   const [nameValidError, setNameValidError] = useState('');
+  const [emailValidError, setEmailValidError] = useState('');
   const [birthdateValidError, setBirthdateValidError] = useState('');
   const [entrancedateValidError, setEntrancedateValidError] = useState('');
 
@@ -167,7 +168,8 @@ export default function CreateMember({navigation}) {
         onChangeText={value => {
           setnewName(value);
           handleValidName(value);
-        }}></TextInput>
+        }}
+      />
       {nameValidError ? <Text>{nameValidError}</Text> : null}
       <TextInput
         value={newEmail}
@@ -176,14 +178,16 @@ export default function CreateMember({navigation}) {
         onChangeText={value => {
           setnewEmail(value);
           handleValidEmail(value);
-        }}></TextInput>
+        }}
+      />
       {emailValidError ? <Text>{emailValidError}</Text> : null}
       <TextInput
         value={newAddress}
         style={styles.input}
         placeholder={'Address'}
         onChangeText={value => setnewAddress(value)}
-        multiline></TextInput>
+        multiline
+      />
       <TextInput
         value={newBirthdate}
         style={styles.input}
@@ -192,7 +196,8 @@ export default function CreateMember({navigation}) {
         onChangeText={value => {
           handleValidBirthdate(value);
           setnewBirthdate(value);
-        }}></TextInput>
+        }}
+      />
       {birthdateValidError ? <Text>{birthdateValidError}</Text> : null}
       <TextInput
         value={newEntrancedate}
@@ -202,13 +207,15 @@ export default function CreateMember({navigation}) {
         onChangeText={value => {
           handleValidEntrancedate(value);
           setnewEntrancedate(value);
-        }}></TextInput>
+        }}
+      />
       {entrancedateValidError ? <Text>{entrancedateValidError}</Text> : null}
       <Text>Today: {currentDate}</Text>
       <CustomButton
         color="#1eb900"
         title="Save Member"
-        onPressFunction={setAddNewTask}></CustomButton>
+        onPressFunction={setAddNewTask}
+      />
 
       <FlatList
         data={g_memberData}

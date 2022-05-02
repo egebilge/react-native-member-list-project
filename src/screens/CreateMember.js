@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import CustomButton from '../utils/CustomButton';
 import {useSelector, useDispatch} from 'react-redux';
 import {setTasks, getMemberData} from '../redux/action';
-// import validErrors from '../errors/validErrors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateMember({navigation}) {
@@ -31,7 +30,7 @@ export default function CreateMember({navigation}) {
       (today.getMonth() + 1) +
       '.' +
       today.getFullYear();
-    getAddNewTask();
+    findValueOfDesiredTask();
     dispatch(getMemberData());
     setCurrentDate(date);
   }, []);
@@ -82,7 +81,7 @@ export default function CreateMember({navigation}) {
 
   // when we click some member in a list,
   // we will find to value of desired member !!.
-  const getAddNewTask = () => {
+  const findValueOfDesiredTask = () => {
     const Task = tasks.find(task => task.ID === taskID);
     if (Task) {
       setnewName(Task.N_Name);
@@ -138,8 +137,8 @@ export default function CreateMember({navigation}) {
           newTasks = [...tasks, newValueTask];
           // liste uzunluğu 3 den büyükse, yeni liste ekletme.
           if (newTasks.length > 3) {
-            Alert.alert('Warning!', 'You cannot add more member in a list.');
             newTasks = [...tasks];
+            Alert.alert('Warning!', 'You cannot add more member in a list.');
           } else {
             // newTasks = [...tasks, newValueTask];
             Alert.alert('Success', 'Member data saved successfully.');
@@ -166,8 +165,8 @@ export default function CreateMember({navigation}) {
         style={styles.input}
         placeholder={'Name'}
         onChangeText={value => {
-          setnewName(value);
           handleValidName(value);
+          setnewName(value);
         }}
       />
       {nameValidError ? <Text>{nameValidError}</Text> : null}
@@ -176,8 +175,8 @@ export default function CreateMember({navigation}) {
         style={styles.input}
         placeholder={'Email'}
         onChangeText={value => {
-          setnewEmail(value);
           handleValidEmail(value);
+          setnewEmail(value);
         }}
       />
       {emailValidError ? <Text>{emailValidError}</Text> : null}
